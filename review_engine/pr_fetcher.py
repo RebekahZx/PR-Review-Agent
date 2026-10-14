@@ -1,3 +1,4 @@
+import os
 from github import Github
 
 
@@ -10,7 +11,9 @@ class PRFetcher:
 
         self.repo_name = "/".join(repo_url.rstrip("/").split("/")[-2:])
 
-        self.token = token or "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"  # Replace or use env var
+        self.token = token or os.environ.get("GITHUB_TOKEN")
+        if not self.token:
+            raise ValueError("Set GITHUB_TOKEN in the environment (never hard-code tokens).")
 
         self.gh = Github(self.token)
 
